@@ -10,7 +10,7 @@ int main()
 {
     // Read image from file
     // Make sure that the image is in grayscale
-    Mat img = imread("Windows_Vs_Mac_Vs_Linux_10.jpg",0);
+    Mat img = imread("lena.jpg",0);
      
     Mat planes[] = {Mat_<float>(img), Mat::zeros(img.size(), CV_32F)};
     Mat complexI;    //Complex plane to contain the DFT coefficients {[0]-Real,[1]-Img}
