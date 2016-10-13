@@ -39,14 +39,14 @@ int main()
 	Mat img2 = imread("ragini.jpg");
 	int row = img1.rows;
 	int col = img1.cols;
-	string type = type2str(img1.type());
-	cout<<type<<endl;
+	//string type = type2str(img1.type());
+	//cout<<type<<endl;
 	/*Size_<int> s1 = Size_<int>(img1.rows,img1.cols); //note this
 	resize(img2,img2,s1);*/ // note this	///not working
 
 	resize(img2,img2,img1.size());
 
-	float alpha = 0.0;
+	float alpha = 0.9;
 	Mat blend = Mat(row,col,CV_8UC3);
 
 	/*for(int i=0;i<row;i++)
