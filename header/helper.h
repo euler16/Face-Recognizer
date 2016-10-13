@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdio>
 
 
 using namespace std;
@@ -32,6 +33,10 @@ int countFiles(const char* dir)
 		return 0;
 }
 
+/*bool fileExists(const char* name)
+{
+	return (FILE *f = fopen(name,"r"));
+}*/
 
 
 /********************************************
