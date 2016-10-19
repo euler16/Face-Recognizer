@@ -1,4 +1,4 @@
-#include "header/Brain.h"
+//#include "header/Brain.h"
 #include "header/helper.h"
 
 #include <fstream>
@@ -8,7 +8,7 @@
 
 #define NUM_BASES 20
 #define ROWS 112
-#define COLS 
+#define COLS 92
 using namespace std;
 using namespace cv;
 
@@ -41,9 +41,16 @@ int main()
 	Mat dst = image_matrix(images);
 	normalize(dst, dst, 0, 255, NORM_MINMAX, CV_8UC1);
 	//performing PCA
-	PCA pca(dst,Mat(),CV_PCA_DATA_AS_COL,NUM_BASES);
-	Mat mean_face = pca.mean.clone();//.reshape(1,112);
-	normalize(mean_face,mean_face,0,255,NORM_MINMAX,CV_8UC1);
+	Mat trying;
+	PCA pca(dst,trying,CV_PCA_DATA_AS_COL,NUM_BASES);
+	Mat test_face = imread("./face_database/s1/1.pgm");
+	normalize(dst, dst, 0, 255, NORM_MINMAX, CV_8UC1);
+	cvtColor(test_face,test_face,CV_BGR2GRAY);
+	Mat projection = pca.project(test_face.reshape(1,10304));
+
+	cout<<format(projection,"python")<<endl<<projection.rows;
+	//Mat mean_face = pca.mean.clone();//.reshape(1,112);
+	//normalize(mean_face,mean_face,0,255,NORM_MINMAX,CV_8UC1);
 	/*Mat eigenvalues = pca.eigenvalues.clone();
 	cout<<eigenvalues<<endl<<endl;
 	cout<<eigenvalues.rows<<" "<<eigenvalues.cols<<endl;*/
@@ -51,7 +58,8 @@ int main()
 	//GENERATION OF EIGEN-FACES
 	Mat eigenvectors = pca.eigenvectors.clone();						//eigenvectors are stored as rows
 	normalize(eigenvectors,eigenvectors,0,255,NORM_MINMAX,CV_8UC1);
-	imwrite("./data/eigenmatrix.pgm",eigenvectors);	//SAVING EIGEN VECTORS FOR FURTHER USE
+	cout<<eigenvectors.rows<<" "<<eigenvectors.cols<<endl;
+	//imwrite("./data/eigenmatrix.pgm",eigenvectors);	//SAVING EIGEN VECTORS FOR FURTHER USE
 	/*for(int i=0;i<NUM_BASES;++i)
 	{
 		sprintf(num,"%d",i);
@@ -82,7 +90,17 @@ int main()
         myfile.close();
 
     }*/
+        //cout<<eigenvectors.rows<<" "<<eigenvectors.cols<<endl;
+        //cout<<dst.rows<<" "<<dst.cols<<endl;
+        //cout<<type_2str(dst.type())<<" "<<type_2str(eigenvectors.type())<<endl;
+        Mat mat1, mat2,mat3;
+        eigenvectors.convertTo(mat1,CV_32FC1);
+        dst.convertTo(mat2,CV_32FC1);
+        mat2.convertTo(mat3,CV_8UC1);
+        cout<<dst-mat3;
+        //Mat _projection = mat1*mat2;
 
-
+        //Mat vector1 = _projection.col(0);
+        //cout<<vector1<<endl;
 	return 0;
 }

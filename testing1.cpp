@@ -76,11 +76,17 @@ int main()
 	sprintf(num,"%d",1);
 	string start_str = num;
 	cout<<start_str<<endl;*/
+	/*vector<int> a;
+	a.push_back(1);
+	a.push_back(2);
+	Mat m(a,CV_8UC1);
+	cout<<m<<endl;
 
-	Mat image = imread("./face_database/s1/1.pgm");
-	cout<<image.rows<<" "<<image.cols<<" "<<image.channels()<<endl;
-	cvtColor(image,image,CV_BGR2GRAY);
-	cout<<image.rows<<" "<<image.cols<<" "<<image.channels()<<endl;
+	cout<<m.rows<<" "<<m.cols<<endl;*/	
+	//Mat image = imread("./face_database/s1/1.pgm");
+	//cout<<image.rows<<" "<<image.cols<<" "<<image.channels()<<endl;
+	//cvtColor(image,image,CV_BGR2GRAY);
+	//cout<<image.rows<<" "<<image.cols<<" "<<image.channels()<<endl;
 
 	return 0;
 }
