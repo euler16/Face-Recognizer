@@ -15,6 +15,12 @@ using namespace cv;
 
 int main()
 {
+
+	// USE THIS TO FIND FACES IN A GENERALISED IMAGE
+	/*Mat image = imread("ragini.jpg");
+	detect(image);*/
+
+
 	char num[8];
 	string _str_;
 	int start, end;
