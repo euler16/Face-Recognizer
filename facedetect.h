@@ -1,59 +1,32 @@
+//USE THIS TO find faces in a particular image 
+
+#ifndef __FACE_DETECT__
+#define __FACE_DETECT__
+
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
 #include <iostream>
+#include <sstream>
 #include <stdio.h>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace cv;
 
 // Function Headers
 //class faceClassifier
-void detectAndDisplay(Mat frame);
 
-// Global variables
-// Copy this file from opencv/data/haarscascades to target folder
-string face_cascade_name = "data/haarcascades/haarcascade_frontalface_alt.xml";
-CascadeClassifier face_cascade;
-string window_name = "Capture - Face detection";
-int filenumber; // Number of file to be saved
-string filename;
-
-// Function main
-int main(void)
+void detect(Mat frame)
 {
-    // Load the cascade
-    if (!face_cascade.load(face_cascade_name)){
-        printf("--(!)Error loading\n");
-        return (-1);
-    }
-
-    // Read the image file
-    Mat frame = imread("Am.jpg");
-
-    // Apply the classifier to the frame
-    if (!frame.empty()){
-        detectAndDisplay(frame);
-    }
-    else{
-        printf(" --(!) No captured frame -- Break!");
-        exit(0);
-    }
-
-    int c = waitKey(10);
-
-    if (27 == char(c)){
-        exit(0);
-    }
-
-    return 0;
-}
-
-// Function detectAndDisplay
-void detectAndDisplay(Mat frame)
-{
+    string face_cascade_name = "data/haarcascade_frontalface_alt.xml";
+    CascadeClassifier face_cascade;
+    int filenumber; // Number of file to be saved
+    string filename;
+    face_cascade.load(face_cascade_name);
     std::vector<Rect> faces;
     Mat frame_gray;
     Mat crop;
@@ -78,7 +51,7 @@ void detectAndDisplay(Mat frame)
     size_t ib = 0; // ib is index of biggest element
     int ab = 0; // ab is area of biggest element
 
-    for (ic = 0; ic < faces.size(); ic++) // Iterate through all current elements (detected faces)
+    for (ic = 0; ic < faces.size(); ic++) 
 
     {
         roi_c.x = faces[ic].x;
@@ -116,23 +89,7 @@ void detectAndDisplay(Mat frame)
         filenumber++;
 
         imwrite(filename, gray);
-
-        Point pt1(faces[ic].x, faces[ic].y); // Display detected faces on main window - live stream from camera
-        Point pt2((faces[ic].x + faces[ic].height), (faces[ic].y + faces[ic].width));
-        rectangle(frame, pt1, pt2, Scalar(0, 255, 0), 2, 8, 0);
     }
-
-    // Show image
-    sstm << "Crop area size: " << roi_b.width << "x" << roi_b.height << " Filename: " << filename;
-    text = sstm.str();
-
-    putText(frame, text, cvPoint(30, 30), FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
-    //imshow("original", frame);
-
-    if (!crop.empty())
-    {
-        //imshow("detected", crop);
-    }
-    else
-        destroyWindow("detected");
 }
+
+#endif
