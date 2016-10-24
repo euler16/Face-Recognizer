@@ -6,6 +6,7 @@
 #include <string>
 
 #include "helper.h"
+#include "classifier.h"
 
 using namespace cv;
 using namespace std;
@@ -19,11 +20,10 @@ class Recognizer
 
 		Mat _eigen_space_; 
 		Mat _training_data_; 
-		//vector<Mat> training_data;
+		vector<Mat> _images_;
 		Mat labels;
 		PCA pca;
 		//void preprocessing();			// Need to decide parameter
-
 
 	public:
 		Recognizer();
@@ -53,10 +53,11 @@ Recognizer::Recognizer(int k_neighbours, int num_eigen = 20, bool is_regression 
 		Recognizer::is_regression = is_regression;
 }
 
-bool Recognizer::train(Mat training_data, vector<int>&classes)
+bool Recognizer::train(Mat training_data, vector<int>&classes, vector<Mat>&images)
 {
 		//Recognizer::training_data = data.clone();
 		Recognizer::labels = Mat(classes, CV_8UC1).t();
+		Recognizer::_images_ = images;
 		//cout<<labels.rows<<" "<<labels.cols<<endl;
 		normalize(training_data, training_data, 0, 255, NORM_MINMAX, CV_8UC1);
 		pca = PCA(training_data,Mat(),CV_PCA_DATA_AS_COL,NUM_BASES);	//eigenspace created
@@ -75,7 +76,7 @@ bool Recognizer::train(Mat training_data, vector<int>&classes)
 int Recognizer::recognize_face(Mat &face)//row
 {
 		int num_elements = face.rows * face.cols;
-		cvtColor(face,face,CV_BGR2GRAY);
+		cvtColor(face,face,CV_BGR2GRAY)
 		normalize(face, face, 0, 255, NORM_MINMAX, CV_8UC1);
 		face.convertTo(face,CV_32FC1);
 		Mat _input_;
@@ -84,18 +85,8 @@ int Recognizer::recognize_face(Mat &face)//row
 		input.convertTo(_input_,CV_32FC1);
 		//cout<<type_2str(_input_.type())<<endl;
 		normalize(_input_, _input_, 0, 255, NORM_MINMAX, CV_32FC1);			//_training_data_ is 20 X 200
-		//cout<<input.rows<<" "<<input.cols<<endl;
-		//CvKNearest clf(_training_data_,labels);
-		//clf.train(_training_data_,labels);
-		//cout<<_input_.rows<<" "<<_input_.cols<<endl;
-		//return clf.find_nearest(_input_.t(),k_neighbours);
-		//if(_training_data_.col(0) == _input_)
-		//	cout<<"equal";
-		///else
-		cout<<type_2str(_input_.type())<<" "<<type_2str(_training_data_.type());
-		//cout<<_training_data_.rows<<" "<<_training_data_.cols<<endl;
-		cout<<_input_.rows<<" "<<_input_.cols<<endl;
-		cout<<_training_data_.col(0)-_input_<<endl;
+		KNearest clf(_training_data_,labels);
+		return clf.predict(face);
 }
 
 #endif
