@@ -1,5 +1,6 @@
 #include "header/Brain.h"
 #include "header/helper.h"
+#include "facedetect"
 
 #include <fstream>
 #include <iostream>
