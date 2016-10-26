@@ -1,5 +1,5 @@
 # Face-Recognizer
-A Near "from scratch" implementation of face recognition system
+A Near "from scratch" implementation of face recognition system.
 
 # TO-DO
 A few things were left to be done in future
